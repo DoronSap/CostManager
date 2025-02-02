@@ -1,0 +1,43 @@
+{
+  "name": "untitled4",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/league-script": "^5.1.1",
+    "@fontsource/pacifico": "^5.1.1",
+    "@fontsource/rochester": "^5.1.1",
+    "@mui/icons-material": "^6.4.1",
+    "@mui/lab": "^6.0.0-beta.24",
+    "@mui/material": "^6.4.1",
+    "@mui/system": "^6.4.2",
+    "@mui/x-date-pickers": "^7.23.6",
+    "chart.js": "^4.4.7",
+    "dayjs": "^1.11.13",
+    "react": "^18.3.1",
+    "react-chartjs-2": "^5.3.0",
+    "react-datepicker": "^7.6.0",
+    "react-dom": "^18.3.1",
+    "react-google-charts": "^5.2.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "@types/react": "^18.3.18",
+    "@types/react-dom": "^18.3.5",
+    "@vitejs/plugin-react": "^4.3.4",
+    "eslint": "^9.17.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.0.0",
+    "eslint-plugin-react-refresh": "^0.4.16",
+    "globals": "^15.14.0",
+    "vite": "^6.0.5"
+  }
+}
