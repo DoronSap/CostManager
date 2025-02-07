@@ -1,17 +1,11 @@
-// idb.js
 export const demo = {};
 
 if (!window.indexedDB) {
     console.error("The web browser doesn't support IndexedDB.");
 } else {
-    // Sample data for the database
-    demo.data = [
-    ];
-
-    // Initialize ID counter
+    demo.data = [];
     demo.currentId = 1;
 
-    // Open the database
     demo.request = indexedDB.open("expenses", 1);
 
     demo.request.onerror = function (event) {
@@ -20,22 +14,10 @@ if (!window.indexedDB) {
 
     demo.request.onsuccess = function () {
         demo.db = demo.request.result;
-        console.log("Database initialized", demo.db);
+        console.log("creating db succeeded", demo.db);
 
-        // Initialize ID counter
         demo.initializeIdCounter();
-
-
-        demo.readAllExpenses()
-            .then(expenses => {
-                console.log("Expenses loaded:", expenses);
-                
-            })
-            .catch(error => {
-                console.error("Error fetching expenses:", error);
-            });
     };
-
 
     demo.request.onupgradeneeded = function (event) {
         demo.db = event.target.result;
@@ -44,7 +26,6 @@ if (!window.indexedDB) {
     };
 }
 
-// Function to initialize the ID counter based on the current highest ID
 demo.initializeIdCounter = function () {
     const objectStore = demo.db.transaction("expensesStorage").objectStore("expensesStorage");
     let highestId = 0;
@@ -52,11 +33,9 @@ demo.initializeIdCounter = function () {
     objectStore.openCursor().onsuccess = function (event) {
         const cursor = event.target.result;
         if (cursor) {
-            // find the highest ID
             highestId = Math.max(highestId, parseInt(cursor.key));
             cursor.continue();
         } else {
-            // set the currentId to highest + 1
             demo.currentId = highestId + 1;
             console.log("Highest ID:", highestId);
             console.log("Next ID:", demo.currentId);
@@ -68,12 +47,10 @@ demo.initializeIdCounter = function () {
     };
 };
 
-
-// Add cost to db
 demo.addCost = function (cost) {
     return new Promise((resolve, reject) => {
-        cost.id = demo.currentId.toString(); // Assign a new id
-        demo.currentId++; // update the id counter
+        cost.id = demo.currentId.toString();
+        demo.currentId++;
 
         const request = demo.db.transaction(["expensesStorage"], "readwrite")
             .objectStore("expensesStorage").add(cost);
@@ -90,8 +67,6 @@ demo.addCost = function (cost) {
     });
 };
 
-
-// Read all items
 demo.readAllExpenses = function () {
     const objectStore = demo.db.transaction("expensesStorage").objectStore("expensesStorage");
     const costs = [];
@@ -99,10 +74,7 @@ demo.readAllExpenses = function () {
         objectStore.openCursor().onsuccess = function (event) {
             const cursor = event.target.result;
             if (cursor) {
-                console.log("readAllItems(): key=" + cursor.key + " amount="
-                    + cursor.value.amount + " category="
-                    + cursor.value.category + " id="
-                    + cursor.value.id);
+                console.log("readAllItems(): key=" + cursor.key + " amount=" + cursor.value.amount + " category=" + cursor.value.category + " id=" + cursor.value.id);
                 costs.push(cursor.value);
                 cursor.continue();
             } else {
@@ -113,8 +85,6 @@ demo.readAllExpenses = function () {
     });
 };
 
-
-// Remove cost by id
 demo.removeCost = function (id) {
     return new Promise((resolve, reject) => {
         const request = demo.db.transaction(["expensesStorage"], "readwrite")
@@ -132,8 +102,6 @@ demo.removeCost = function (id) {
     });
 };
 
-
-// Filter expenses by month and year
 demo.readExpensesByMonth = function (month, year) {
     return new Promise((resolve, reject) => {
         const objectStore = demo.db.transaction("expensesStorage").objectStore("expensesStorage");
@@ -146,9 +114,7 @@ demo.readExpensesByMonth = function (month, year) {
             if (cursor) {
                 const data = cursor.value;
 
-                // Check if the item month and year match the selected date
                 if (Number(data.month) === Number(month) && Number(data.year) === Number(year)) {
-
                     costs.push(data);
                 }
 
