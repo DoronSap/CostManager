@@ -5,6 +5,8 @@ import FilterForm from "./Filter_By_Month.jsx";
 import ExpenseChart from "./Expenses_Pie_Chart.jsx";
 import { Container, Box, Button } from "@mui/material";
 
+
+
 const Expenses_List = ({ refresh }) => {
     const [expenses, setExpenses] = useState([]);
     const [filteredExpenses, setFilteredExpenses] = useState([]);
@@ -18,15 +20,16 @@ const Expenses_List = ({ refresh }) => {
             try {
                 const data = await demo.readAllExpenses();
                 setExpenses(data);
-                setFilteredExpenses(data);  
+                setFilteredExpenses(data);
                 recalculateChartData(data);
             } catch (error) {
                 console.error("Error fetching expenses:", error);
             }
         };
 
-        fetchAllExpenses();
+        fetchAllExpenses().catch((error) => console.error("Error in fetchAllExpenses:", error));
     }, [refresh]);
+
 
     const recalculateChartData = (expensesList) => {
         const categoryTotals = expensesList.reduce((acc, expense) => {
@@ -87,11 +90,11 @@ const Expenses_List = ({ refresh }) => {
                 onFilter={handleFilterExpenses}
             />
 
-            
+
             <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={5}>
                 <Box flex={3} minWidth="500px">
-                    
-                    {/* Expenses List, if there is expenses in the choosen month -> show them, if not show message */}
+
+                    {/* Expenses List, if there is expenses in the chosen month -> show them, if not show message */}
                     {filteredExpenses.length > 0 ? (
                         <ExpensesAccordion expenses={filteredExpenses} onDelete={handleRemoveItem} />
                     ) : null}
