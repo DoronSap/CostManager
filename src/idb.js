@@ -1,12 +1,14 @@
 export const demo = {};
 
 if (!window.indexedDB) {
-    console.error("The web browser doesn't support IndexedDB.");
-} else {
-    demo.data = [];
-    demo.currentId = 1;
+    console.error("The web browser doesn't support IndexedDB.");}
 
-    demo.request = indexedDB.open("expenses", 1);
+else {
+    demo.data = []; // Sample data for the database
+    demo.currentId = 1; // Initialize ID counter
+
+
+    demo.request = indexedDB.open("expenses", 1); // Open the database
 
     demo.request.onerror = function (event) {
         console.error("Error creating database:", event.target.error);
@@ -15,7 +17,7 @@ if (!window.indexedDB) {
     demo.request.onsuccess = function () {
         demo.db = demo.request.result;
         console.log("Database opened successfully", demo.db);
-        demo.initializeIdCounter();
+        demo.initializeIdCounter();  // Initialize ID counter based on existing data
     };
 
     demo.request.onupgradeneeded = function (event) {
@@ -24,7 +26,7 @@ if (!window.indexedDB) {
         demo.data.forEach((cost) => objectStore.add(cost));
     };
 
-    // Ensure the database is initialized and ready before proceeding
+    // check that the database is initialized and ready
     const ensureDbReady = () => {
         return new Promise((resolve, reject) => {
             const interval = setInterval(() => {
@@ -36,7 +38,8 @@ if (!window.indexedDB) {
         });
     };
 
-
+    
+// Function to initialize the ID counter based on the current highest ID
     demo.initializeIdCounter = function () {
     const objectStore = demo.db.transaction("expensesStorage").objectStore("expensesStorage");
     let highestId = 0;
@@ -64,8 +67,8 @@ if (!window.indexedDB) {
     demo.addCost = async function (cost) {
         await ensureDbReady();
         return new Promise((resolve, reject) => {
-            cost.id = demo.currentId.toString();
-            demo.currentId++;
+            cost.id = demo.currentId.toString();  // Assign a new id
+            demo.currentId++; // update the id counter
 
             const request = demo.db.transaction(["expensesStorage"], "readwrite")
                 .objectStore("expensesStorage").add(cost);
@@ -133,7 +136,8 @@ if (!window.indexedDB) {
 
                 if (cursor) {
                     const data = cursor.value;
-
+                    
+                    // Check if the item month and year match the selected date
                     if (Number(data.month) === Number(month) && Number(data.year) === Number(year)) {
                         costs.push(data);
                     }
