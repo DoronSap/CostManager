@@ -78,7 +78,7 @@ const Expenses_Accordion = ({ expenses, onDelete }) => {
                     </AccordionSummary>
 
                     <AccordionDetails>
-                        <Typography><strong>Amount:</strong> {expense.amount}$</Typography>
+                        <Typography><strong>Amount:</strong> {expense.amount}nis</Typography>
                         <Typography><strong>Date:</strong> {expense.month}/{expense.year}</Typography>
                         <Typography><strong>Description:</strong> {expense.description}</Typography>
                     </AccordionDetails>
