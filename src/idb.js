@@ -20,11 +20,22 @@ if (!window.indexedDB) {
 
     demo.request.onsuccess = function () {
         demo.db = demo.request.result;
-        console.log("creating db succeeded", demo.db);
+        console.log("Database initialized", demo.db);
 
-        // Initialize ID counter based on existing data
+        // Initialize ID counter
         demo.initializeIdCounter();
+
+
+        demo.readAllExpenses()
+            .then(expenses => {
+                console.log("Expenses loaded:", expenses);
+                
+            })
+            .catch(error => {
+                console.error("Error fetching expenses:", error);
+            });
     };
+
 
     demo.request.onupgradeneeded = function (event) {
         demo.db = event.target.result;
