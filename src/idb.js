@@ -36,6 +36,30 @@ if (!window.indexedDB) {
         });
     };
 
+
+    demo.initializeIdCounter = function () {
+    const objectStore = demo.db.transaction("expensesStorage").objectStore("expensesStorage");
+    let highestId = 0;
+
+    objectStore.openCursor().onsuccess = function (event) {
+        const cursor = event.target.result;
+        if (cursor) {
+            // find the highest ID
+            highestId = Math.max(highestId, parseInt(cursor.key));
+            cursor.continue();
+        } else {
+            // set the currentId to highest + 1
+            demo.currentId = highestId + 1;
+            console.log("Highest ID:", highestId);
+            console.log("Next ID:", demo.currentId);
+        }
+    };
+
+    objectStore.openCursor().onerror = function () {
+        console.error("Error opening cursor!");
+    };
+};
+    
     // Add cost
     demo.addCost = async function (cost) {
         await ensureDbReady();
