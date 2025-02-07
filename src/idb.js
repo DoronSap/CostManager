@@ -38,31 +38,31 @@ else {
         });
     };
 
-    
+
 // Function to initialize the ID counter based on the current highest ID
     demo.initializeIdCounter = function () {
-    const objectStore = demo.db.transaction("expensesStorage").objectStore("expensesStorage");
-    let highestId = 0;
+        const objectStore = demo.db.transaction("expensesStorage").objectStore("expensesStorage");
+        let highestId = 0;
 
-    objectStore.openCursor().onsuccess = function (event) {
-        const cursor = event.target.result;
-        if (cursor) {
-            // find the highest ID
-            highestId = Math.max(highestId, parseInt(cursor.key));
-            cursor.continue();
-        } else {
-            // set the currentId to highest + 1
-            demo.currentId = highestId + 1;
-            console.log("Highest ID:", highestId);
-            console.log("Next ID:", demo.currentId);
-        }
+        objectStore.openCursor().onsuccess = function (event) {
+            const cursor = event.target.result;
+            if (cursor) {
+                // find the highest ID
+                highestId = Math.max(highestId, parseInt(cursor.key));
+                cursor.continue();
+            } else {
+                // set the currentId to highest + 1
+                demo.currentId = highestId + 1;
+                console.log("Highest ID:", highestId);
+                console.log("Next ID:", demo.currentId);
+            }
+        };
+
+        objectStore.openCursor().onerror = function () {
+            console.error("Error opening cursor!");
+        };
     };
 
-    objectStore.openCursor().onerror = function () {
-        console.error("Error opening cursor!");
-    };
-};
-    
     // Add cost
     demo.addCost = async function (cost) {
         await ensureDbReady();
@@ -136,7 +136,7 @@ else {
 
                 if (cursor) {
                     const data = cursor.value;
-                    
+
                     // Check if the item month and year match the selected date
                     if (Number(data.month) === Number(month) && Number(data.year) === Number(year)) {
                         costs.push(data);
