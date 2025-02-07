@@ -27,7 +27,7 @@ else {
     };
 
     // check that the database is initialized and ready
-    const ensureDbReady = () => {
+     demo.ensureDbReady = () => {
         return new Promise((resolve, reject) => {
             const interval = setInterval(() => {
                 if (demo.db) {
@@ -65,7 +65,7 @@ else {
 
     // Add cost
     demo.addCost = async function (cost) {
-        await ensureDbReady();
+        await demo.ensureDbReady();
         return new Promise((resolve, reject) => {
             cost.id = demo.currentId.toString();  // Assign a new id
             demo.currentId++; // update the id counter
@@ -87,7 +87,7 @@ else {
 
     // Read all expenses
     demo.readAllExpenses = async function () {
-        await ensureDbReady();
+        await demo.ensureDbReady();
         const objectStore = demo.db.transaction("expensesStorage").objectStore("expensesStorage");
         const costs = [];
         return new Promise((resolve, reject) => {
@@ -106,7 +106,7 @@ else {
 
     // Remove cost
     demo.removeCost = async function (id) {
-        await ensureDbReady();
+        await demo.ensureDbReady();
         return new Promise((resolve, reject) => {
             const request = demo.db.transaction(["expensesStorage"], "readwrite")
                 .objectStore("expensesStorage").delete(id);
@@ -125,7 +125,7 @@ else {
 
     // Read expenses by month and year
     demo.readExpensesByMonth = async function (month, year) {
-        await ensureDbReady();
+        await demo.ensureDbReady();
         return new Promise((resolve, reject) => {
             const objectStore = demo.db.transaction("expensesStorage").objectStore("expensesStorage");
             const costs = [];
