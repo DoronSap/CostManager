@@ -13,20 +13,20 @@ const Expenses_List = ({ refresh }) => {
     const [chartData, setChartData] = useState([["Category", "Amount"]]);
     const [showAllExpenses, setShowAllExpenses] = useState(false);
 
-    useEffect(() => {
-        const fetchAllExpenses = async () => {
-            try {
-                const data = await demo.readAllExpenses();
-                setExpenses(data);
-                setFilteredExpenses(data);
-                recalculateChartData(data);
-            } catch (error) {
-                console.error("Error fetching expenses:", error);
-            }
-        };
+    const fetchAllExpenses = async () => {
+        try {
+            const data = await demo.readAllExpenses();
+            setExpenses(data);
+            setFilteredExpenses(data);  // Initially set both as the same
+            recalculateChartData(data);
+        } catch (error) {
+            console.error("Error fetching expenses:", error);
+        }
+    };
 
-        fetchAllExpenses().catch((error) => console.error("Error in fetchAllExpenses:", error));
-    }, [refresh]);
+    useEffect(() => {
+        fetchAllExpenses();
+    }, [refresh]); // This fetches the data when refresh changes
 
     const recalculateChartData = (expensesList) => {
         const categoryTotals = expensesList.reduce((acc, expense) => {
@@ -69,7 +69,6 @@ const Expenses_List = ({ refresh }) => {
         }
     };
 
-
     const handleShowAllExpenses = () => {
         setShowAllExpenses(false);
         setFilteredExpenses(expenses);
@@ -89,7 +88,6 @@ const Expenses_List = ({ refresh }) => {
             />
 
             <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={5}>
-                {/* Expenses List, if there is expenses in the choosen month -> show them, if not show message */}
                 <Box flex={3} minWidth="500px">
                     {filteredExpenses.length > 0 ? (
                         <ExpensesAccordion expenses={filteredExpenses} onDelete={handleRemoveItem} />
@@ -101,25 +99,24 @@ const Expenses_List = ({ refresh }) => {
                         <ExpensesAccordion expenses={expenses} onDelete={handleRemoveItem} />
                     ) : null}
 
-                    {/* button to show all the expense again after filter the expenses by month*/}
                     <Button
                         onClick={handleShowAllExpenses}
                         variant="contained"
                         sx={{
-                        padding: "10px 20px",
-                        fontSize: "16px",
-                        borderRadius: "8px",
-                        textTransform: "none",
-                        backgroundColor: "#b5bef1",
-                        "&:hover": {
-                            backgroundColor: "#8894dd",
-                        },
-                    }}>
+                            padding: "10px 20px",
+                            fontSize: "16px",
+                            borderRadius: "8px",
+                            textTransform: "none",
+                            backgroundColor: "#b5bef1",
+                            "&:hover": {
+                                backgroundColor: "#8894dd",
+                            },
+                        }}
+                    >
                         Show All Expenses
                     </Button>
                 </Box>
 
-                {/* Pie Chart  */}
                 <Box flex={2} minWidth="600px">
                     {filteredExpenses.length > 0 && chartData.length > 1 && <ExpenseChart chartData={chartData} />}
                 </Box>
