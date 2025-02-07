@@ -13,20 +13,20 @@ const Expenses_List = ({ refresh }) => {
     const [chartData, setChartData] = useState([["Category", "Amount"]]);
     const [showAllExpenses, setShowAllExpenses] = useState(false);
 
-    const fetchAllExpenses = async () => {
-        try {
-            const data = await demo.readAllExpenses();
-            setExpenses(data);
-            setFilteredExpenses(data);  // Initially set both as the same
-            recalculateChartData(data);
-        } catch (error) {
-            console.error("Error fetching expenses:", error);
-        }
-    };
-
     useEffect(() => {
+        const fetchAllExpenses = async () => {
+            try {
+                const data = await demo.readAllExpenses();
+                setExpenses(data);
+                setFilteredExpenses(data);  // Initially set both as the same
+                recalculateChartData(data);
+            } catch (error) {
+                console.error("Error fetching expenses:", error);
+            }
+        };
+
         fetchAllExpenses();
-    }, [refresh]); // This fetches the data when refresh changes
+    }, [refresh]);
 
     const recalculateChartData = (expensesList) => {
         const categoryTotals = expensesList.reduce((acc, expense) => {
