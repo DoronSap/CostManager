@@ -18,7 +18,7 @@ const Expenses_List = ({ refresh }) => {
             try {
                 const data = await demo.readAllExpenses();
                 setExpenses(data);
-                setFilteredExpenses(data);  // Initially set both as the same
+                setFilteredExpenses(data);  
                 recalculateChartData(data);
             } catch (error) {
                 console.error("Error fetching expenses:", error);
@@ -87,8 +87,11 @@ const Expenses_List = ({ refresh }) => {
                 onFilter={handleFilterExpenses}
             />
 
+            
             <Box display="flex" flexDirection={{ xs: "column", md: "row" }} gap={5}>
                 <Box flex={3} minWidth="500px">
+                    
+                    {/* Expenses List, if there is expenses in the choosen month -> show them, if not show message */}
                     {filteredExpenses.length > 0 ? (
                         <ExpensesAccordion expenses={filteredExpenses} onDelete={handleRemoveItem} />
                     ) : null}
