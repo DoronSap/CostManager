@@ -9,7 +9,7 @@ import '@fontsource/rochester';
 const App = () => {
     const [refresh, setRefresh] = useState(false);
     const [open, setOpen] = useState(false);
-
+    
     const handleRefresh = () => setRefresh((prev) => !prev);
 
     const handleOpen = () => setOpen(true);
@@ -19,7 +19,6 @@ const App = () => {
 
     return (
         <div>
-
             {/* Title and FAB */}
             <Box
                 sx={{
@@ -27,9 +26,7 @@ const App = () => {
                     alignItems: "center",
                     justifyContent: "space-between",
                     padding: 2,
-                    gap: 2,
-                }}
-            >
+                    gap: 2, }}>
 
                 {/* Title */}
                 <Typography
@@ -38,9 +35,7 @@ const App = () => {
                     sx={{
                         fontWeight: "bold",
                         color: "#8894dd",
-                        fontFamily: "'Rochester', cursive",
-                    }}
-                >
+                        fontFamily: "'Rochester', cursive",}}>
                     Cost Manager:
                 </Typography>
 
@@ -52,7 +47,7 @@ const App = () => {
             <Expenses_List refresh={refresh}/> {}
             <Add_Expenses_Dialog open={open} handleClose={handleClose} handleRefresh={handleRefresh}/>
         </div>
-    );
-};
+    ); // end return
+}; // end App
 
 export default App;
